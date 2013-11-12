@@ -14,7 +14,7 @@ var fs = require("fs"),
 var entries = [
         "// polyfiller.\n// https://github.com/watermelonbunny/polyfiller\n// Build Date: " + now
     ],
-    sum = 0,
+    sum = 1,
     begin = function (obj) {
         console.log(obj);
         var key,
@@ -33,16 +33,19 @@ var entries = [
         }
     },
     addEntry = function (key, nkey) {
-        console.log(key + "/" + nkey + ".js");
         fs.readFile("lib/" + key + "/" + nkey + ".js",
                 "utf8",
                 function (error, result) {
+                    if (error) {
+                        console.log(error);
+                    }
                     // add one indentation level
                     result = "    " + result.replace(/\n/gmi, "\n    ");
                     entries.push("if (typeof " + key + ".prototype." + nkey + " !== \"function\"){\r\n" + result + "\r\n}");
                     if (entries.length === sum) {
                         write(entries.join("\r\n\r\n"));
                     }
+                    console.log(key + "/" + nkey + ".js");
                 });
     },
     write = function (code) {

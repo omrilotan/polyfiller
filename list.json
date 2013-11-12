@@ -17,5 +17,9 @@
         "matches",
         "addEventListener",
         "removeEventListener"
+    ],
+    "Window": [
+        "addEventListener",
+        "removeEventListener"
     ]
 }

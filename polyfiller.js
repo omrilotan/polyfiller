@@ -8,6 +8,16 @@ if (typeof String.prototype.trim !== "function"){
     };
 }
 
+if (typeof Array.prototype.forEach !== "function"){
+    Array.prototype.forEach = function forEach (fn, scope) {
+        var i = 0,
+            len = this.length;
+        for(; i < len; ++i) {
+            fn.call(scope, this[i], i, this);
+        }
+    };
+}
+
 if (typeof Array.prototype.indexOf !== "function"){
     Array.prototype.indexOf = function indexOf (what, i) {
         i = i || 0;
@@ -19,16 +29,6 @@ if (typeof Array.prototype.indexOf !== "function"){
             ++i;
         }
         return -1;
-    };
-}
-
-if (typeof Array.prototype.forEach !== "function"){
-    Array.prototype.forEach = function forEach (fn, scope) {
-        var i = 0,
-            len = this.length;
-        for(; i < len; ++i) {
-            fn.call(scope, this[i], i, this);
-        }
     };
 }
 
@@ -73,18 +73,6 @@ if (typeof Object.prototype.hasOwnProperty !== "function"){
     };
 }
 
-if (typeof Element.prototype.matches !== "function"){
-    Element.prototype.matches =
-            Element.prototype.matchesSelector ||
-            Element.prototype.mozMatchesSelector ||
-            Element.prototype.webkitMatchesSelector ||
-            Element.prototype.msMatchesSelector ||
-            Element.prototype.oMatchesSelector || function (query) {
-                var collection = document.querySelectorAll(query);
-                return [].indexOf.call(collection, this);
-            };
-}
-
 if (typeof Function.prototype.bind !== "function"){
     Function.prototype.bind = function bind (that) {
         if (typeof this !== "function") {
@@ -105,12 +93,54 @@ if (typeof Function.prototype.bind !== "function"){
     };
 }
 
+if (typeof Element.prototype.matches !== "function"){
+    Element.prototype.matches =
+            Element.prototype.matchesSelector ||
+            Element.prototype.mozMatchesSelector ||
+            Element.prototype.webkitMatchesSelector ||
+            Element.prototype.msMatchesSelector ||
+            Element.prototype.oMatchesSelector || function (query) {
+                var collection = document.querySelectorAll(query);
+                return [].indexOf.call(collection, this);
+            };
+}
+
 if (typeof Element.prototype.addEventListener !== "function"){
     Element.prototype.addEventListener = function (type, method /* useCapture */) {
         if (typeof this.attachEvent === "function") {
             this.attachEvent("on" + type, method);
         } else {
             this["on" + type] = method;
+        }
+    };
+}
+
+if (typeof Element.prototype.removeEventListener !== "function"){
+    Element.prototype.removeEventListener = function (type, method /* useCapture */) {
+        if (typeof this.detachEvent === "function") {
+            this.detachEvent("on" + type, method);
+        } else {
+            this["on" + type] = null;
+        }
+    };
+}
+
+if (typeof Window.prototype.addEventListener !== "function"){
+    Window.prototype.addEventListener = function (type, method /* useCapture */) {
+        if (typeof this.attachEvent === "function") {
+            this.attachEvent("on" + type, method);
+        } else {
+            this["on" + type] = method;
+        }
+    };
+}
+
+if (typeof Window.prototype.removeEventListener !== "function"){
+    Window.prototype.removeEventListener = function (type, method /* useCapture */) {
+        if (typeof this.detachEvent === "function") {
+            this.detachEvent("on" + type, method);
+        } else {
+            this["on" + type] = null;
         }
     };
 }

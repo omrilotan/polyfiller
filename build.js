@@ -38,7 +38,7 @@ var entries = [
                 "utf8",
                 function (error, result) {
                     // add one indentation level
-                    result = "\t" + result.replace(/\n/gmi, "\n\t");
+                    result = "    " + result.replace(/\n/gmi, "\n    ");
                     entries.push("if (typeof " + key + ".prototype." + nkey + " !== \"function\"){\r\n" + result + "\r\n}");
                     if (entries.length === sum) {
                         write(entries.join("\r\n\r\n"));

@@ -1,0 +1,21 @@
+{
+    "String": [
+        "trim"
+    ],
+    "Array": [
+        "indexOf",
+        "forEach",
+        "reduce"
+    ],
+    "Object": [
+        "hasOwnProperty"
+    ],
+    "Function": [
+        "bind"
+    ],
+    "Element": [
+        "matches",
+        "addEventListener",
+        "removeEventListener"
+    ]
+}

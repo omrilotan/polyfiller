@@ -1,6 +1,6 @@
 // polyfiller.
 // https://github.com/watermelonbunny/polyfiller
-// Build Date: 2013-11-12
+// Build Date: 2013-11-13
 
 if (typeof String.prototype.trim !== "function"){
     String.prototype.trim = function trim () {
@@ -101,7 +101,7 @@ if (typeof Element.prototype.matches !== "function"){
             Element.prototype.msMatchesSelector ||
             Element.prototype.oMatchesSelector || function (query) {
                 var collection = document.querySelectorAll(query);
-                return [].indexOf.call(collection, this);
+                return [].indexOf.call(collection, this) !== -1;
             };
 }
 

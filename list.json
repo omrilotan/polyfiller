@@ -18,6 +18,10 @@
         "addEventListener",
         "removeEventListener"
     ],
+    "Event": [
+        "preventDefault",
+        "stopPropagation"
+    ],
     "Window": [
         "addEventListener",
         "removeEventListener"

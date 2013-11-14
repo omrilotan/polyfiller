@@ -1,20 +1,10 @@
 // polyfiller.
 // https://github.com/watermelonbunny/polyfiller
-// Build Date: 2013-11-13
+// Build Date: 2013-11-14
 
 if (typeof String.prototype.trim !== "function"){
     String.prototype.trim = function trim () {
         return this.replace(/^\s+|\s+$/g, "");
-    };
-}
-
-if (typeof Array.prototype.forEach !== "function"){
-    Array.prototype.forEach = function forEach (fn, scope) {
-        var i = 0,
-            len = this.length;
-        for(; i < len; ++i) {
-            fn.call(scope, this[i], i, this);
-        }
     };
 }
 
@@ -29,6 +19,16 @@ if (typeof Array.prototype.indexOf !== "function"){
             ++i;
         }
         return -1;
+    };
+}
+
+if (typeof Array.prototype.forEach !== "function"){
+    Array.prototype.forEach = function forEach (fn, scope) {
+        var i = 0,
+            len = this.length;
+        for(; i < len; ++i) {
+            fn.call(scope, this[i], i, this);
+        }
     };
 }
 
@@ -122,6 +122,20 @@ if (typeof Element.prototype.removeEventListener !== "function"){
         } else {
             this["on" + type] = null;
         }
+    };
+}
+
+if (typeof Event.prototype.preventDefault !== "function"){
+    Event.prototype.preventDefault = function () {
+        event = this !== null && this !== window ? this : window.event;
+        event.returnValue = false;
+    };
+}
+
+if (typeof Event.prototype.stopPropagation !== "function"){
+    Event.prototype.stopPropagation = function () {
+        event = this !== null && this !== window ? this : window.event;
+        event.cancelBubble = true;
     };
 }
 

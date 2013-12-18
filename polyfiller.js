@@ -132,7 +132,7 @@ if (typeof Element.prototype.contains !== "function"){
 
 if (typeof Element.prototype.addEventListener !== "function"){
     Element.prototype.addEventListener = 
-    document.addEventListener = 
+    HTMLDocument.prototype.addEventListener = 
     Window.prototype.addEventListener = function (type, method /* useCapture */) {
         if (typeof this.attachEvent === "function") {
             this.attachEvent("on" + type, method);
@@ -144,7 +144,7 @@ if (typeof Element.prototype.addEventListener !== "function"){
 
 if (typeof Element.prototype.removeEventListener !== "function"){
     Element.prototype.removeEventListener = 
-    document.removeEventListener = 
+    HTMLDocument.prototype.removeEventListener = 
     Window.prototype.removeEventListener = function (type, method /* useCapture */) {
         if (typeof this.detachEvent === "function") {
             this.detachEvent("on" + type, method);

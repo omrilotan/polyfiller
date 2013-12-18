@@ -1,6 +1,8 @@
 // dependencies
 var fs = require("fs"),
-    name = "polyfiller",
+    filename = "polyfiller",
+    
+    // Used for build date
     now = (function (date) {
         var toDoubleDigit = function (num) {
             return num < 10 ? "0" + num : "" + num;
@@ -8,13 +10,15 @@ var fs = require("fs"),
         return date.getFullYear() + "-" +
                 toDoubleDigit(date.getMonth() + 1) + "-" +
                 toDoubleDigit(date.getDate());
-    }((new Date)));
+    }((new Date))),
 
-// operations
-var entries = [
+    // Collecting files info a single code base
+    entries = [
         "// polyfiller.\n// https://github.com/watermelonbunny/polyfiller\n// Build Date: " + now
     ],
-    sum = 1,
+    sum = entries.length,
+    
+    // operations
     begin = function (obj) {
         console.log(obj);
         var key,
@@ -33,6 +37,7 @@ var entries = [
         }
     },
     addEntry = function (key, nkey) {
+        var place = sum - 1;
         fs.readFile("lib/" + key + "/" + nkey + ".js",
                 "utf8",
                 function (error, result) {
@@ -41,7 +46,7 @@ var entries = [
                     }
                     // add one indentation level
                     result = "    " + result.replace(/\n/gmi, "\n    ");
-                    entries.push("if (typeof " + key + ".prototype." + nkey + " !== \"function\"){\r\n" + result + "\r\n}");
+                    entries[place] = "if (typeof " + key + ".prototype." + nkey + " !== \"function\"){\r\n" + result + "\r\n}";
                     if (entries.length === sum) {
                         write(entries.join("\r\n\r\n"));
                     }
@@ -49,7 +54,7 @@ var entries = [
                 });
     },
     write = function (code) {
-        fs.writeFile(name + ".js", code, function (error) {
+        fs.writeFile(filename + ".js", code, function (error) {
             if (error) {
                 
             } else {

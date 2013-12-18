@@ -1,6 +1,6 @@
 // polyfiller.
 // https://github.com/watermelonbunny/polyfiller
-// Build Date: 2013-11-14
+// Build Date: 2013-11-15
 
 if (typeof String.prototype.trim !== "function"){
     String.prototype.trim = function trim () {

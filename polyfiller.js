@@ -1,6 +1,6 @@
 // polyfiller.
 // https://github.com/watermelonbunny/polyfiller
-// Build Date: 2013-11-15
+// Build Date: 2013-12-18
 
 if (typeof String.prototype.trim !== "function"){
     String.prototype.trim = function trim () {
@@ -62,6 +62,18 @@ if (typeof Array.prototype.reduce !== "function"){
             throw new TypeError("Reduce of empty array with no initial value");
         }
         return value;
+    };
+}
+
+if (typeof Array.prototype.filter !== "function"){
+    Array.prototype.filter = function filter (fn) {
+        var newArray = [];
+        this.forEach(function filterTest (item) {
+            if (!!fn.call(item, item)) {
+                newArray.push(item);
+            }
+        });
+        return newArray;
     };
 }
 

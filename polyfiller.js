@@ -117,8 +117,23 @@ if (typeof Element.prototype.matches !== "function"){
             };
 }
 
+if (typeof Element.prototype.contains !== "function"){
+    Element.prototype.contains =
+        HTMLDocument.prototype.contains =
+            function (node) {
+        while (element = element.parentNode) {
+            if (element == this) {
+                return true;
+            }
+        }
+        return false;
+    };
+}
+
 if (typeof Element.prototype.addEventListener !== "function"){
-    Element.prototype.addEventListener = function (type, method /* useCapture */) {
+    Element.prototype.addEventListener = 
+    document.addEventListener = 
+    Window.prototype.addEventListener = function (type, method /* useCapture */) {
         if (typeof this.attachEvent === "function") {
             this.attachEvent("on" + type, method);
         } else {
@@ -128,7 +143,9 @@ if (typeof Element.prototype.addEventListener !== "function"){
 }
 
 if (typeof Element.prototype.removeEventListener !== "function"){
-    Element.prototype.removeEventListener = function (type, method /* useCapture */) {
+    Element.prototype.removeEventListener = 
+    document.removeEventListener = 
+    Window.prototype.removeEventListener = function (type, method /* useCapture */) {
         if (typeof this.detachEvent === "function") {
             this.detachEvent("on" + type, method);
         } else {
@@ -148,25 +165,5 @@ if (typeof Event.prototype.stopPropagation !== "function"){
     Event.prototype.stopPropagation = function () {
         event = this !== null && this !== window ? this : window.event;
         event.cancelBubble = true;
-    };
-}
-
-if (typeof Window.prototype.addEventListener !== "function"){
-    Window.prototype.addEventListener = function (type, method /* useCapture */) {
-        if (typeof this.attachEvent === "function") {
-            this.attachEvent("on" + type, method);
-        } else {
-            this["on" + type] = method;
-        }
-    };
-}
-
-if (typeof Window.prototype.removeEventListener !== "function"){
-    Window.prototype.removeEventListener = function (type, method /* useCapture */) {
-        if (typeof this.detachEvent === "function") {
-            this.detachEvent("on" + type, method);
-        } else {
-            this["on" + type] = null;
-        }
     };
 }

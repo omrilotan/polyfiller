@@ -14,7 +14,7 @@ var fs = require("fs"),
 
     // Collecting files info a single code base
     entries = [
-        "// polyfiller.\n// https://github.com/watermelonbunny/polyfiller\n// Build Date: " + now
+        "// polyfiller.\n// https://github.com/omrilotan/polyfiller\n// Build Date: " + now
     ],
     sum = entries.length,
     

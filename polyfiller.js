@@ -1,14 +1,14 @@
 // polyfiller.
 // https://github.com/omrilotan/polyfiller
-// Build Date: 2014-01-15
+// Build Date: 2014-03-17
 
-if (typeof String.prototype.trim !== "function"){
+if (typeof String.prototype.trim !== "function") {
     String.prototype.trim = function trim () {
         return this.replace(/^\s+|\s+$/g, "");
     };
 }
 
-if (typeof Array.prototype.indexOf !== "function"){
+if (typeof Array.prototype.indexOf !== "function") {
     Array.prototype.indexOf = function indexOf (what, i) {
         i = i || 0;
         var len = this.length;
@@ -22,17 +22,17 @@ if (typeof Array.prototype.indexOf !== "function"){
     };
 }
 
-if (typeof Array.prototype.forEach !== "function"){
+if (typeof Array.prototype.forEach !== "function") {
     Array.prototype.forEach = function forEach (fn, scope) {
         var i = 0,
             len = this.length;
-        for(; i < len; ++i) {
+        for (; i < len; ++i) {
             fn.call(scope, this[i], i, this);
         }
     };
 }
 
-if (typeof Array.prototype.reduce !== "function"){
+if (typeof Array.prototype.reduce !== "function") {
     Array.prototype.reduce = function reduce(callback, context) {
         if (this === null || this === undefined) {
             throw new TypeError("Array.prototype.reduce called on null or undefined");
@@ -65,7 +65,7 @@ if (typeof Array.prototype.reduce !== "function"){
     };
 }
 
-if (typeof Array.prototype.filter !== "function"){
+if (typeof Array.prototype.filter !== "function") {
     Array.prototype.filter = function filter (fn) {
         var newArray = [];
         this.forEach(function filterTest (item) {
@@ -77,7 +77,7 @@ if (typeof Array.prototype.filter !== "function"){
     };
 }
 
-if (typeof Object.prototype.hasOwnProperty !== "function"){
+if (typeof Object.prototype.hasOwnProperty !== "function") {
     Object.prototype.hasOwnProperty = function hasOwnProperty (property) {
         var _prototype = this.__proto__ || this.constructor.prototype;
         return (property in this) && (!(property in _prototype) ||
@@ -85,7 +85,7 @@ if (typeof Object.prototype.hasOwnProperty !== "function"){
     };
 }
 
-if (typeof Function.prototype.bind !== "function"){
+if (typeof Function.prototype.bind !== "function") {
     Function.prototype.bind = function bind (that) {
         if (typeof this !== "function") {
             // closest thing possible to the ECMAScript 5 internal IsCallable function
@@ -105,7 +105,7 @@ if (typeof Function.prototype.bind !== "function"){
     };
 }
 
-if (typeof Element.prototype.matches !== "function"){
+if (typeof Element.prototype.matches !== "function") {
     Element.prototype.matches =
             Element.prototype.matchesSelector ||
             Element.prototype.mozMatchesSelector ||
@@ -117,10 +117,9 @@ if (typeof Element.prototype.matches !== "function"){
             };
 }
 
-if (typeof Element.prototype.contains !== "function"){
+if (typeof Element.prototype.contains !== "function") {
     Element.prototype.contains =
-        HTMLDocument.prototype.contains =
-            function (node) {
+    (!!HTMLDocument ? HTMLDocument.prototype : document).contains = function (node) {
         while (element = element.parentNode) {
             if (element == this) {
                 return true;
@@ -130,9 +129,9 @@ if (typeof Element.prototype.contains !== "function"){
     };
 }
 
-if (typeof Element.prototype.addEventListener !== "function"){
+if (typeof Element.prototype.addEventListener !== "function") {
     Element.prototype.addEventListener = 
-    HTMLDocument.prototype.addEventListener = 
+    (!!HTMLDocument ? HTMLDocument.prototype : document).addEventListener = 
     Window.prototype.addEventListener = function (type, method /* useCapture */) {
         if (typeof this.attachEvent === "function") {
             this.attachEvent("on" + type, method);
@@ -142,9 +141,9 @@ if (typeof Element.prototype.addEventListener !== "function"){
     };
 }
 
-if (typeof Element.prototype.removeEventListener !== "function"){
+if (typeof Element.prototype.removeEventListener !== "function") {
     Element.prototype.removeEventListener = 
-    HTMLDocument.prototype.removeEventListener = 
+    (!!HTMLDocument ? HTMLDocument.prototype : document).removeEventListener = 
     Window.prototype.removeEventListener = function (type, method /* useCapture */) {
         if (typeof this.detachEvent === "function") {
             this.detachEvent("on" + type, method);
@@ -154,14 +153,14 @@ if (typeof Element.prototype.removeEventListener !== "function"){
     };
 }
 
-if (typeof Event.prototype.preventDefault !== "function"){
+if (typeof Event.prototype.preventDefault !== "function") {
     Event.prototype.preventDefault = function () {
         event = this !== null && this !== window ? this : window.event;
         event.returnValue = false;
     };
 }
 
-if (typeof Event.prototype.stopPropagation !== "function"){
+if (typeof Event.prototype.stopPropagation !== "function") {
     Event.prototype.stopPropagation = function () {
         event = this !== null && this !== window ? this : window.event;
         event.cancelBubble = true;

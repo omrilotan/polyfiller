@@ -46,7 +46,7 @@ var fs = require("fs"),
                     }
                     // add one indentation level
                     result = "    " + result.replace(/\n/gmi, "\n    ");
-                    entries[place] = "if (typeof " + key + ".prototype." + nkey + " !== \"function\"){\r\n" + result + "\r\n}";
+                    entries[place] = "if (typeof " + key + ".prototype." + nkey + " !== \"function\") {\r\n" + result + "\r\n}";
                     if (entries.length === sum) {
                         write(entries.join("\r\n\r\n"));
                     }

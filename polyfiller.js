@@ -1,6 +1,6 @@
 // polyfiller.
 // https://github.com/omrilotan/polyfiller
-// Build Date: 2014-03-17
+// Build Date: 2014-03-20
 
 if (typeof String.prototype.trim !== "function") {
     String.prototype.trim = function trim () {
@@ -119,7 +119,7 @@ if (typeof Element.prototype.matches !== "function") {
 
 if (typeof Element.prototype.contains !== "function") {
     Element.prototype.contains =
-    (!!HTMLDocument ? HTMLDocument.prototype : document).contains = function (node) {
+    (window.HTMLDocument ? HTMLDocument.prototype : document).contains = function (node) {
         while (element = element.parentNode) {
             if (element == this) {
                 return true;
@@ -131,7 +131,7 @@ if (typeof Element.prototype.contains !== "function") {
 
 if (typeof Element.prototype.addEventListener !== "function") {
     Element.prototype.addEventListener = 
-    (!!HTMLDocument ? HTMLDocument.prototype : document).addEventListener = 
+    (window.HTMLDocument ? HTMLDocument.prototype : document).addEventListener = 
     Window.prototype.addEventListener = function (type, method /* useCapture */) {
         if (typeof this.attachEvent === "function") {
             this.attachEvent("on" + type, method);
@@ -143,7 +143,7 @@ if (typeof Element.prototype.addEventListener !== "function") {
 
 if (typeof Element.prototype.removeEventListener !== "function") {
     Element.prototype.removeEventListener = 
-    (!!HTMLDocument ? HTMLDocument.prototype : document).removeEventListener = 
+    (window.HTMLDocument ? HTMLDocument.prototype : document).removeEventListener = 
     Window.prototype.removeEventListener = function (type, method /* useCapture */) {
         if (typeof this.detachEvent === "function") {
             this.detachEvent("on" + type, method);

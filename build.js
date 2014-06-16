@@ -1,9 +1,13 @@
 // dependencies
-var fs = require("fs"),
+var config = {
+        name: "polyfiller",
+        source: "https://github.com/omrilotan/polyfiller"
+    },
+    fs = require("fs"),
     filename = "polyfiller",
     
     // Used for build date
-    now = (function (date) {
+    now = (function parseCurrentDate (date) {
         var toDoubleDigit = function (num) {
             return num < 10 ? "0" + num : "" + num;
         };
@@ -14,7 +18,7 @@ var fs = require("fs"),
 
     // Collecting files info a single code base
     entries = [
-        "// polyfiller.\n// https://github.com/omrilotan/polyfiller\n// Build Date: " + now
+        "// " + config.name + ".\n// " + config.source + "\n// Build Date: " + now
     ],
     sum = entries.length,
     
@@ -45,7 +49,7 @@ var fs = require("fs"),
                         console.log(error);
                     }
                     // add one indentation level
-                    result = "    " + result.replace(/\n/gmi, "\n    ");
+                    result = "    " + key + ".prototype." + result.replace(/\n/gmi, "\n    ");
                     entries[place] = "if (typeof " + key + ".prototype." + nkey + " !== \"function\") {\r\n" + result + "\r\n}";
                     if (entries.length === sum) {
                         write(entries.join("\r\n\r\n"));

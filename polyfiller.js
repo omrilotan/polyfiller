@@ -1,15 +1,15 @@
 // polyfiller.
 // https://github.com/omrilotan/polyfiller
-// Build Date: 2014-03-20
+// Build Date: 2014-06-16
 
 if (typeof String.prototype.trim !== "function") {
-    String.prototype.trim = function trim () {
+    String.prototype.trim = function String$trim () {
         return this.replace(/^\s+|\s+$/g, "");
     };
 }
 
 if (typeof Array.prototype.indexOf !== "function") {
-    Array.prototype.indexOf = function indexOf (what, i) {
+    Array.prototype.indexOf = function Array$indexOf (what, i) {
         i = i || 0;
         var len = this.length;
         while (i < len) {
@@ -23,7 +23,7 @@ if (typeof Array.prototype.indexOf !== "function") {
 }
 
 if (typeof Array.prototype.forEach !== "function") {
-    Array.prototype.forEach = function forEach (fn, scope) {
+    Array.prototype.forEach = function Array$forEach (fn, scope) {
         var i = 0,
             len = this.length;
         for (; i < len; ++i) {
@@ -33,7 +33,7 @@ if (typeof Array.prototype.forEach !== "function") {
 }
 
 if (typeof Array.prototype.reduce !== "function") {
-    Array.prototype.reduce = function reduce(callback, context) {
+    Array.prototype.reduce = function Array$reduce (callback, context) {
         if (this === null || this === undefined) {
             throw new TypeError("Array.prototype.reduce called on null or undefined");
         }
@@ -66,19 +66,19 @@ if (typeof Array.prototype.reduce !== "function") {
 }
 
 if (typeof Array.prototype.filter !== "function") {
-    Array.prototype.filter = function filter (fn) {
-        var newArray = [];
-        this.forEach(function filterTest (item) {
-            if (!!fn.call(item, item)) {
-                newArray.push(item);
+    Array.prototype.filter = function Array$filter (fn) {
+        var index = data[member].length;
+        while (index--) {
+            if (!fn(this[index])) {
+                this.splice(index, index + 1);
             }
-        });
-        return newArray;
+        }
+        return this;
     };
 }
 
 if (typeof Object.prototype.hasOwnProperty !== "function") {
-    Object.prototype.hasOwnProperty = function hasOwnProperty (property) {
+    Object.prototype.hasOwnProperty = function Object$hasOwnProperty (property) {
         var _prototype = this.__proto__ || this.constructor.prototype;
         return (property in this) && (!(property in _prototype) ||
                 _prototype[property] !== this[property]);
@@ -86,20 +86,20 @@ if (typeof Object.prototype.hasOwnProperty !== "function") {
 }
 
 if (typeof Function.prototype.bind !== "function") {
-    Function.prototype.bind = function bind (that) {
+    Function.prototype.bind = function Function$bind (that) {
         if (typeof this !== "function") {
             // closest thing possible to the ECMAScript 5 internal IsCallable function
             throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
         }
         var args = Array.prototype.slice.call(arguments, 1), 
             original = this, 
-            dummy = function () {},
-            bound = function () {
-                return original.apply(this instanceof dummy && that ?
+            Dummy = function _Dummy () {},
+            bound = function _bound () {
+                return original.apply(this instanceof Dummy && that ?
                         this : that,
                         args.concat(Array.prototype.slice.call(arguments)));
             };
-        dummy.prototype = this.prototype;
+        Dummy.prototype = this.prototype;
         bound.prototype = new dummy();
         return bound;
     };
@@ -111,7 +111,7 @@ if (typeof Element.prototype.matches !== "function") {
             Element.prototype.mozMatchesSelector ||
             Element.prototype.webkitMatchesSelector ||
             Element.prototype.msMatchesSelector ||
-            Element.prototype.oMatchesSelector || function (query) {
+            Element.prototype.oMatchesSelector || function Element$matches (query) {
                 var collection = document.querySelectorAll(query);
                 return [].indexOf.call(collection, this) !== -1;
             };
@@ -119,7 +119,7 @@ if (typeof Element.prototype.matches !== "function") {
 
 if (typeof Element.prototype.contains !== "function") {
     Element.prototype.contains =
-    (window.HTMLDocument ? HTMLDocument.prototype : document).contains = function (node) {
+    (window.HTMLDocument ? HTMLDocument.prototype : document).contains = function Element$contains (node) {
         while (element = element.parentNode) {
             if (element == this) {
                 return true;
@@ -132,7 +132,7 @@ if (typeof Element.prototype.contains !== "function") {
 if (typeof Element.prototype.addEventListener !== "function") {
     Element.prototype.addEventListener = 
     (window.HTMLDocument ? HTMLDocument.prototype : document).addEventListener = 
-    Window.prototype.addEventListener = function (type, method /* useCapture */) {
+    Window.prototype.addEventListener = function Element$addEventListener (type, method /* useCapture */) {
         if (typeof this.attachEvent === "function") {
             this.attachEvent("on" + type, method);
         } else {
@@ -144,7 +144,7 @@ if (typeof Element.prototype.addEventListener !== "function") {
 if (typeof Element.prototype.removeEventListener !== "function") {
     Element.prototype.removeEventListener = 
     (window.HTMLDocument ? HTMLDocument.prototype : document).removeEventListener = 
-    Window.prototype.removeEventListener = function (type, method /* useCapture */) {
+    Window.prototype.removeEventListener = function Element$removeEventListener (type, method /* useCapture */) {
         if (typeof this.detachEvent === "function") {
             this.detachEvent("on" + type, method);
         } else {
@@ -154,14 +154,14 @@ if (typeof Element.prototype.removeEventListener !== "function") {
 }
 
 if (typeof Event.prototype.preventDefault !== "function") {
-    Event.prototype.preventDefault = function () {
+    Event.prototype.preventDefault = function Event$preventDefault () {
         event = this !== null && this !== window ? this : window.event;
         event.returnValue = false;
     };
 }
 
 if (typeof Event.prototype.stopPropagation !== "function") {
-    Event.prototype.stopPropagation = function () {
+    Event.prototype.stopPropagation = function Event$stopPropagation () {
         event = this !== null && this !== window ? this : window.event;
         event.cancelBubble = true;
     };

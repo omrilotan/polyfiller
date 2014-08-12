@@ -155,14 +155,14 @@ if (typeof Element.prototype.removeEventListener !== "function") {
 
 if (typeof Event.prototype.preventDefault !== "function") {
     Event.prototype.preventDefault = function Event$preventDefault () {
-        event = this !== null && this !== window ? this : window.event;
+        var event = this !== null && this !== window ? this : window.event;
         event.returnValue = false;
     };
 }
 
 if (typeof Event.prototype.stopPropagation !== "function") {
     Event.prototype.stopPropagation = function Event$stopPropagation () {
-        event = this !== null && this !== window ? this : window.event;
+        var event = this !== null && this !== window ? this : window.event;
         event.cancelBubble = true;
     };
 }

@@ -1,6 +1,6 @@
 // polyfiller.
 // https://github.com/omrilotan/polyfiller
-// Build Date: 2014-06-16
+// Build Date: 2014-08-12
 
 if (typeof String.prototype.trim !== "function") {
     String.prototype.trim = function String$trim () {
@@ -120,8 +120,8 @@ if (typeof Element.prototype.matches !== "function") {
 if (typeof Element.prototype.contains !== "function") {
     Element.prototype.contains =
     (window.HTMLDocument ? HTMLDocument.prototype : document).contains = function Element$contains (node) {
-        while (element = element.parentNode) {
-            if (element == this) {
+        while (node = node.parentNode) {
+            if (node == this) {
                 return true;
             }
         }

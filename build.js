@@ -1,11 +1,15 @@
 // dependencies
 var config = {
-        name: "polyfiller",
-        source: "https://github.com/omrilotan/polyfiller"
+        name:     "polyfiller",
+        source:   "https://bitbucket.org/omrilotan/polyfiller",
+        filename: "polyfiller"
     },
     fs = require("fs"),
-    filename = "polyfiller",
-    
+
+    templates = {
+        FILLER: "if (typeof ${ type }.prototype.${ name } !== \"function\") {\r\n${ fn }\r\n}"
+    },
+
     // Used for build date
     now = (function parseCurrentDate (date) {
         var toDoubleDigit = function (num) {
@@ -16,12 +20,20 @@ var config = {
                 toDoubleDigit(date.getDate());
     }((new Date))),
 
+    interpolate = function (string, obj) {
+        return string.replace(/\${([^{}]*)}/gmi,
+            function (a, b) {
+                var r = obj[b.trim()];
+                return typeof r === 'string' || typeof r === 'number' ? r : a;
+            });
+    },
+
     // Collecting files info a single code base
     entries = [
         "// " + config.name + ".\n// " + config.source + "\n// Build Date: " + now
     ],
     sum = entries.length,
-    
+
     // operations
     begin = function (obj) {
         console.log(obj);
@@ -48,19 +60,25 @@ var config = {
                     if (error) {
                         console.log(error);
                     }
+                    var data = {
+                        type: key,
+                        name: nkey,
+                        fn: result
+                    };
                     // add one indentation level
-                    result = "    " + key + ".prototype." + result.replace(/\n/gmi, "\n    ");
-                    entries[place] = "if (typeof " + key + ".prototype." + nkey + " !== \"function\") {\r\n" + result + "\r\n}";
+                    data.fn = interpolate("    ${ type }.prototype.${ fn }", data).replace(/\n/gmi, "\n    ");
+
+                    entries[place] = interpolate(templates.FILLER, data);
                     if (entries.length === sum) {
                         write(entries.join("\r\n\r\n"));
                     }
-                    console.log(key + "/" + nkey + ".js");
+                    console.log(interpolate("${ type }/${ name }.js", data));
                 });
     },
     write = function (code) {
-        fs.writeFile(filename + ".js", code, function (error) {
+        fs.writeFile(config.filename + ".js", code, function (error) {
             if (error) {
-                
+
             } else {
                 console.log("file saved");
             }

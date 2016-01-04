@@ -1,12 +1,16 @@
 {
     "String": [
-        "trim"
+        "trim",
+        "repeat"
     ],
     "Array": [
-        "indexOf",
+        "filter",
+        "find",
+        "findIndex",
         "forEach",
+        "indexOf",
         "reduce",
-        "filter"
+        "some"
     ],
     "Object": [
         "hasOwnProperty"
@@ -15,9 +19,9 @@
         "bind"
     ],
     "Element": [
-        "matches",
-        "contains",
         "addEventListener",
+        "contains",
+        "matches",
         "removeEventListener"
     ],
     "Event": [

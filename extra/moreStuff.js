@@ -1,3 +1,25 @@
+if (typeof Object.assign !== "function") {
+    Object.assign = function Object$assign () {
+        var it = {},
+            arg,
+            key;
+
+        while (arg = [].shift.call(arguments)) {
+
+            if (arg === null || typeof arg !== "object") {
+                throw new TypeError("Invalid argument");
+            }
+
+            for (key in arg) {
+                if (arg.hasOwnProperty(key)) {
+                    it[key] = arg[key];
+                }
+            }
+        }
+        return it;
+    };
+}
+
 //////////////////////
 /* get DOM elements */
 //////////////////////

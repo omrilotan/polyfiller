@@ -1,10 +1,97 @@
 // polyfiller.
 // https://bitbucket.org/omrilotan/polyfiller
-// Build Date: 2015-11-06
+// Build Date: 2016-01-03
 
 if (typeof String.prototype.trim !== "function") {
     String.prototype.trim = function String$trim () {
         return this.replace(/^\s+|\s+$/g, "");
+    };
+}
+
+if (typeof String.prototype.repeat !== "function") {
+    String.prototype.repeat = function String$repeat (count) {
+        if (count < 0) {
+          throw new RangeError('repeat count must be non-negative');
+        }
+        if (count == Infinity) {
+          throw new RangeError('repeat count must be less than infinity');
+        }
+        count = Math.floor(count);
+        var string = '' + this;
+
+        // Ensuring count is a 31-bit integer allows us to heavily optimize the
+        // main part. But anyway, most current (August 2014) browsers can't handle
+        // strings 1 << 28 chars or longer, so:
+        if (string.length * count >= 1 << 28) {
+            throw new RangeError('repeat count must not overflow maximum string size');
+        }
+
+        if (string.length == 0 || count == 0) {
+          return '';
+        }
+
+        while (count--) {
+            string += string;
+        }
+        return string;
+    };
+}
+
+if (typeof Array.prototype.filter !== "function") {
+    Array.prototype.filter = function Array$filter (fn) {
+        var index = data[member].length;
+        while (index--) {
+            if (!fn(this[index])) {
+                this.splice(index, index + 1);
+            }
+        }
+        return this;
+    };
+}
+
+if (typeof Array.prototype.find !== "function") {
+    Array.prototype.find = function Array$find (fn) {
+        if (typeof fn !== "function") {
+            throw new TypeError("predicate must be a function");
+        }
+
+        var i = this.length;
+
+        // Iterate from the end in case the array gets mutated in the process
+        while (i--) {
+            if (fn.call(this[i], this[i], i, this)) {
+                return this[i];
+            }
+        }
+        return undefined;
+    };
+}
+
+if (typeof Array.prototype.findIndex !== "function") {
+    Array.prototype.findIndex = function Array$findIndex (fn) {
+        if (typeof fn !== "function") {
+            throw new TypeError("predicate must be a function");
+        }
+
+        var i = this.length;
+
+        // Iterate from the end in case the array gets mutated in the process
+        while (i--) {
+            if (fn.call(this[i], this[i], i, this)) {
+                return i;
+            }
+        }
+        return -1;
+    };
+}
+
+if (typeof Array.prototype.forEach !== "function") {
+    Array.prototype.forEach = function Array$forEach (fn, scope) {
+        var i = 0,
+            len = this.length;
+        for (; i < len; ++i) {
+            fn.call(scope, this[i], i, this);
+        }
     };
 }
 
@@ -19,16 +106,6 @@ if (typeof Array.prototype.indexOf !== "function") {
             ++i;
         }
         return -1;
-    };
-}
-
-if (typeof Array.prototype.forEach !== "function") {
-    Array.prototype.forEach = function Array$forEach (fn, scope) {
-        var i = 0,
-            len = this.length;
-        for (; i < len; ++i) {
-            fn.call(scope, this[i], i, this);
-        }
     };
 }
 
@@ -65,15 +142,20 @@ if (typeof Array.prototype.reduce !== "function") {
     };
 }
 
-if (typeof Array.prototype.filter !== "function") {
-    Array.prototype.filter = function Array$filter (fn) {
-        var index = data[member].length;
-        while (index--) {
-            if (!fn(this[index])) {
-                this.splice(index, index + 1);
+if (typeof Array.prototype.some !== "function") {
+    Array.prototype.some = function Array$some (fn/*, arg*/) {
+        if (typeof fn !== "function") {
+            throw new TypeError("predicate must be a function");
+        }
+        var arg = arguments.length >= 2 ? arguments[1] : null,
+            i = this.length;
+
+        while (i--) {
+            if (fn.call(arg, this[i], i, this)) {
+                return true;
             }
         }
-        return this;
+        return false;
     };
 }
 
@@ -91,8 +173,8 @@ if (typeof Function.prototype.bind !== "function") {
             // closest thing possible to the ECMAScript 5 internal IsCallable function
             throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
         }
-        var args = Array.prototype.slice.call(arguments, 1), 
-            original = this, 
+        var args = Array.prototype.slice.call(arguments, 1),
+            original = this,
             Dummy = function _Dummy () {},
             bound = function _bound () {
                 return original.apply(this instanceof Dummy && that ?
@@ -102,6 +184,30 @@ if (typeof Function.prototype.bind !== "function") {
         Dummy.prototype = this.prototype;
         bound.prototype = new dummy();
         return bound;
+    };
+}
+
+if (typeof Element.prototype.addEventListener !== "function") {
+    Element.prototype.addEventListener =
+    (window.HTMLDocument ? HTMLDocument.prototype : document).addEventListener =
+    Window.prototype.addEventListener = function Element$addEventListener (type, method /* useCapture */) {
+        if (typeof this.attachEvent === "function") {
+            this.attachEvent("on" + type, method);
+        } else {
+            this["on" + type] = method;
+        }
+    };
+}
+
+if (typeof Element.prototype.contains !== "function") {
+    Element.prototype.contains =
+    (window.HTMLDocument ? HTMLDocument.prototype : document).contains = function Element$contains (node) {
+        while (node = node.parentNode) {
+            if (node == this) {
+                return true;
+            }
+        }
+        return false;
     };
 }
 
@@ -117,33 +223,9 @@ if (typeof Element.prototype.matches !== "function") {
             };
 }
 
-if (typeof Element.prototype.contains !== "function") {
-    Element.prototype.contains =
-    (window.HTMLDocument ? HTMLDocument.prototype : document).contains = function Element$contains (node) {
-        while (node = node.parentNode) {
-            if (node == this) {
-                return true;
-            }
-        }
-        return false;
-    };
-}
-
-if (typeof Element.prototype.addEventListener !== "function") {
-    Element.prototype.addEventListener = 
-    (window.HTMLDocument ? HTMLDocument.prototype : document).addEventListener = 
-    Window.prototype.addEventListener = function Element$addEventListener (type, method /* useCapture */) {
-        if (typeof this.attachEvent === "function") {
-            this.attachEvent("on" + type, method);
-        } else {
-            this["on" + type] = method;
-        }
-    };
-}
-
 if (typeof Element.prototype.removeEventListener !== "function") {
-    Element.prototype.removeEventListener = 
-    (window.HTMLDocument ? HTMLDocument.prototype : document).removeEventListener = 
+    Element.prototype.removeEventListener =
+    (window.HTMLDocument ? HTMLDocument.prototype : document).removeEventListener =
     Window.prototype.removeEventListener = function Element$removeEventListener (type, method /* useCapture */) {
         if (typeof this.detachEvent === "function") {
             this.detachEvent("on" + type, method);

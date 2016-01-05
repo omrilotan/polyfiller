@@ -9,6 +9,7 @@
         "findIndex",
         "forEach",
         "indexOf",
+        "map",
         "reduce",
         "some"
     ],

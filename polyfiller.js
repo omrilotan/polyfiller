@@ -1,6 +1,6 @@
 // polyfiller.
 // https://bitbucket.org/omrilotan/polyfiller
-// Build Date: 2016-01-03
+// Build Date: 2016-01-05
 
 if (typeof String.prototype.trim !== "function") {
     String.prototype.trim = function String$trim () {
@@ -106,6 +106,24 @@ if (typeof Array.prototype.indexOf !== "function") {
             ++i;
         }
         return -1;
+    };
+}
+
+if (typeof Array.prototype.map !== "function") {
+    Array.prototype.map = function Array$map (callback, context) {
+        var i = 0,
+            len = this.length,
+            result = new Array(len);
+
+        if (typeof callback !== "function") {
+          throw new TypeError(callback + " is not a function");
+        }
+
+        for (; i < len; i++) {
+            result[i] = callback.call(context, this[i], i, this);
+        }
+
+        return result;
     };
 }
 

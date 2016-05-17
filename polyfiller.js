@@ -1,6 +1,6 @@
 // polyfiller.
 // https://bitbucket.org/omrilotan/polyfiller
-// Build Date: 2016-01-05
+// Build Date: 2016-05-17
 
 if (typeof String.prototype.trim !== "function") {
     String.prototype.trim = function String$trim () {
@@ -18,18 +18,18 @@ if (typeof String.prototype.repeat !== "function") {
         }
         count = Math.floor(count);
         var string = '' + this;
-
+    
         // Ensuring count is a 31-bit integer allows us to heavily optimize the
         // main part. But anyway, most current (August 2014) browsers can't handle
         // strings 1 << 28 chars or longer, so:
         if (string.length * count >= 1 << 28) {
             throw new RangeError('repeat count must not overflow maximum string size');
         }
-
+    
         if (string.length == 0 || count == 0) {
           return '';
         }
-
+    
         while (count--) {
             string += string;
         }
@@ -54,9 +54,9 @@ if (typeof Array.prototype.find !== "function") {
         if (typeof fn !== "function") {
             throw new TypeError("predicate must be a function");
         }
-
+    
         var i = this.length;
-
+    
         // Iterate from the end in case the array gets mutated in the process
         while (i--) {
             if (fn.call(this[i], this[i], i, this)) {
@@ -72,9 +72,9 @@ if (typeof Array.prototype.findIndex !== "function") {
         if (typeof fn !== "function") {
             throw new TypeError("predicate must be a function");
         }
-
+    
         var i = this.length;
-
+    
         // Iterate from the end in case the array gets mutated in the process
         while (i--) {
             if (fn.call(this[i], this[i], i, this)) {
@@ -111,18 +111,19 @@ if (typeof Array.prototype.indexOf !== "function") {
 
 if (typeof Array.prototype.map !== "function") {
     Array.prototype.map = function Array$map (callback, context) {
-        var i = 0,
-            len = this.length,
-            result = new Array(len);
-
+    
         if (typeof callback !== "function") {
           throw new TypeError(callback + " is not a function");
         }
-
+    
+        var i = 0,
+            len = this.length,
+            result = new Array(len);
+    
         for (; i < len; i++) {
             result[i] = callback.call(context, this[i], i, this);
         }
-
+    
         return result;
     };
 }
@@ -167,7 +168,7 @@ if (typeof Array.prototype.some !== "function") {
         }
         var arg = arguments.length >= 2 ? arguments[1] : null,
             i = this.length;
-
+    
         while (i--) {
             if (fn.call(arg, this[i], i, this)) {
                 return true;
@@ -191,8 +192,8 @@ if (typeof Function.prototype.bind !== "function") {
             // closest thing possible to the ECMAScript 5 internal IsCallable function
             throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
         }
-        var args = Array.prototype.slice.call(arguments, 1),
-            original = this,
+        var args = Array.prototype.slice.call(arguments, 1), 
+            original = this, 
             Dummy = function _Dummy () {},
             bound = function _bound () {
                 return original.apply(this instanceof Dummy && that ?
@@ -206,8 +207,8 @@ if (typeof Function.prototype.bind !== "function") {
 }
 
 if (typeof Element.prototype.addEventListener !== "function") {
-    Element.prototype.addEventListener =
-    (window.HTMLDocument ? HTMLDocument.prototype : document).addEventListener =
+    Element.prototype.addEventListener = 
+    (window.HTMLDocument ? HTMLDocument.prototype : document).addEventListener = 
     Window.prototype.addEventListener = function Element$addEventListener (type, method /* useCapture */) {
         if (typeof this.attachEvent === "function") {
             this.attachEvent("on" + type, method);
@@ -242,8 +243,8 @@ if (typeof Element.prototype.matches !== "function") {
 }
 
 if (typeof Element.prototype.removeEventListener !== "function") {
-    Element.prototype.removeEventListener =
-    (window.HTMLDocument ? HTMLDocument.prototype : document).removeEventListener =
+    Element.prototype.removeEventListener = 
+    (window.HTMLDocument ? HTMLDocument.prototype : document).removeEventListener = 
     Window.prototype.removeEventListener = function Element$removeEventListener (type, method /* useCapture */) {
         if (typeof this.detachEvent === "function") {
             this.detachEvent("on" + type, method);

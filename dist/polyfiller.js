@@ -1,6 +1,6 @@
 // polyfiller.
-// https://bitbucket.org/omrilotan/polyfiller
-// Build Date: 2016-05-17
+// https://github.com/omrilotan/polyfiller
+// Build Date: 2016-10-07
 
 if (typeof String.prototype.trim !== "function") {
     String.prototype.trim = function String$trim () {

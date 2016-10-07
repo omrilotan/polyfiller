@@ -1,8 +1,9 @@
 // dependencies
 var config = {
         name:     "polyfiller",
-        source:   "https://bitbucket.org/omrilotan/polyfiller",
-        filename: "polyfiller"
+        source:   "https://github.com/omrilotan/polyfiller",
+        filename: "polyfiller",
+        directory: "dist"
     },
     fs = require("fs"),
 
@@ -76,7 +77,7 @@ var config = {
                 });
     },
     write = function (code) {
-        fs.writeFile(config.filename + ".js", code, function (error) {
+        fs.writeFile(config.directory + "/" + config.filename + ".js", code, function (error) {
             if (error) {
 
             } else {
